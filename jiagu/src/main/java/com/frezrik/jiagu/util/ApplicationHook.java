@@ -25,7 +25,7 @@ public class ApplicationHook {
             return;
         }
 
-        Log.w("NDK_JIAGU", "hook");
+        Log.w("NDK_JIAGU", "hook: " + delegateApplicationName);
         try {
             // 先获取到ContextImpl对象
             Context contextImpl = application.getBaseContext();

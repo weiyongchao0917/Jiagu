@@ -3,6 +3,7 @@ package com.frezrik.jiagu;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import com.frezrik.jiagu.util.ApplicationHook;
 import com.frezrik.jiagu.util.AssetsUtil;
@@ -18,9 +19,13 @@ public class StubApp extends Application {
     protected void attachBaseContext(Context context) {
         super.attachBaseContext(context);
 
-        System.load(AssetsUtil.copyJiagu(context));
+        if (Build.VERSION.SDK_INT <= 26) {
+            System.load(AssetsUtil.copyJiagu(context));
 
-        attach(this);
+            attach(this);
+        } else {
+
+        }
     }
 
     @Override

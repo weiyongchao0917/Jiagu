@@ -73,7 +73,7 @@ public class AppManager {
     // 调试应用路径
     public static final String TEST_APK = "app/build/outputs/apk/release/app-release.apk";
     // 调试jiagu.aar
-    public static final String TEST_AAR = "jiagu/build/outputs/aar/jiagu-release.aar";
+    public static final String TEST_AAR = "jiagu/build/outputs/aar/jiagu-debug.aar";
     // 调试so文件夹
     public static final String TEST_SO = TEMP_UNZIP + "shell/jni/";
     /************ debug配置 *************/

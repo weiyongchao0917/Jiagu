@@ -1,4 +1,4 @@
-package com.frezrik.jiagu;
+package com.frezrik.jiagu.test;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

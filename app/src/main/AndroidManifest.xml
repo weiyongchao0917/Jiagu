@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.frezrik.jiagu">
+    package="com.frezrik.jiagu.test">
 
     <application
         android:name=".MyApp"
@@ -31,7 +31,8 @@
         <service
             android:name=".TestService"
             android:enabled="true"
-            android:exported="false">
+            android:exported="false"
+            android:process=":Test">
             <intent-filter>
                 <action android:name="com.frezrik.jiagu.testService" />
             </intent-filter>
@@ -39,7 +40,13 @@
 
         <provider
             android:name=".TestContentProvider"
-            android:authorities="com.frezrik.jiagu.TestContentProvider"
+            android:authorities="com.frezrik.jiagu.test.TestContentProvider"
+            android:enabled="true"
+            android:exported="true" />
+
+        <provider
+            android:name=".Test2ContentProvider"
+            android:authorities="com.frezrik.jiagu.test.Test2ContentProvider"
             android:enabled="true"
             android:exported="true" />
     </application>

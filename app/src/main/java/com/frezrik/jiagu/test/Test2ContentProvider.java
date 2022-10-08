@@ -1,4 +1,4 @@
-package com.frezrik.jiagu;
+package com.frezrik.jiagu.test;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-public class TestContentProvider extends ContentProvider {
-    public TestContentProvider() {
+public class Test2ContentProvider
+        extends ContentProvider {
+    public Test2ContentProvider() {
     }
 
     @Override
@@ -32,7 +33,7 @@ public class TestContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         // TODO: Implement this to initialize your content provider on startup.
-        Log.d("JIAGU_TEST", "onCreate[ContentProvider] ==> " + getContext().getApplicationContext().getClass().getName());
+        Log.d("JIAGU_TEST", "onCreate[ContentProvider2] ==> " + getContext().getApplicationContext().getClass().getName());
         return false;
     }
 
