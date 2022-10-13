@@ -250,8 +250,8 @@ static void make_dex_elements(JNIEnv *env, jobject classLoader, std::vector<jobj
     env->DeleteLocalRef(PathClassLoader);
 }
 
-static void hook_application(jobject app, jstring name) {
-    CallObjectMethod(app,  "invoke2", "(Landroid/app/Application;Ljava/lang/String;)V", app, name);
+static void hook_application(jobject app, jobject classLoader, jstring name) {
+    CallObjectMethod(app,  "invoke2", "(Landroid/app/Application;Ljava/lang/ClassLoader;Ljava/lang/String;)V", app, classLoader, name);
 }
 
 /**
@@ -325,9 +325,12 @@ static void loadDex(JNIEnv *env, jobject application, jbyteArray dexArray) {
         index += dexLength;
         count++;
     }
+
+    jstring appname = env->NewStringUTF(app_name);
     if (g_sdk_int < 26) {
         ndk_dlclose(art_handle);
         make_dex_elements(env, classLoader, dexobjs);
+        hook_application(application, classLoader, appname);
     } else {
         jclass ElementClass = env->FindClass("java/nio/ByteBuffer");
         jobjectArray dexBufferArr = env->NewObjectArray(dexBuffers.size(), ElementClass, NULL);
@@ -347,15 +350,14 @@ static void loadDex(JNIEnv *env, jobject application, jbyteArray dexArray) {
         }
         make_dex_elements(env, classLoader, dexobjs);
 
+        hook_application(application, InMemoryObj, appname);
+
         env->DeleteLocalRef(ElementClass);
         env->DeleteLocalRef(InMemoryDexClassLoaderClass);
         env->DeleteLocalRef(InMemoryObj);
         env->DeleteLocalRef(pathListObj);
     }
 
-
-    jstring appname = env->NewStringUTF(app_name);
-    hook_application(application, appname);
 
     free(decryptdex);
     for (int i = 0; i < dexobjs.size(); i++) {

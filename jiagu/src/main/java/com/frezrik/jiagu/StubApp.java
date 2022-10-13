@@ -48,8 +48,8 @@ public class StubApp extends Application {
         return ZipUtil.getDexData(s);
     }
 
-    public void invoke2(Application application, String s) {
-        ApplicationHook.hook(application, s);
+    public void invoke2(Application application, ClassLoader cl, String s) {
+        ApplicationHook.hook(application, cl, s);
     }
 
     public native static void attach(StubApp base);

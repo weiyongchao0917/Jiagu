@@ -19,7 +19,7 @@ public class ApplicationHook {
     /**
      * jni层回调创建真实Application
      */
-    public static void hook(Application application, String delegateApplicationName) {
+    public static void hook(Application application, ClassLoader cl, String delegateApplicationName) {
         if (TextUtils.isEmpty(delegateApplicationName) || "com.frezrik.jiagu.StubApp".equals(delegateApplicationName)) {
             sDelegateApplication = application;
             return;
