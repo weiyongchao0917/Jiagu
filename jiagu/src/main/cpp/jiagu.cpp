@@ -343,11 +343,21 @@ static void loadDex(JNIEnv *env, jobject application, jbyteArray dexArray) {
                                                                 "([Ljava/nio/ByteBuffer;Ljava/lang/ClassLoader;)V");
         jobject InMemoryObj = env->NewObject(InMemoryDexClassLoaderClass, InMemoryDexClassLoaderInit, dexBufferArr, classLoader);
         jobject pathListObj = GetField(InMemoryObj, "pathList", "Ldalvik/system/DexPathList;").l;
-
-        jobjectArray dexElement = static_cast<jobjectArray>(GetField(pathListObj, "dexElements", "[Ldalvik/system/DexPathList$Element;").l);
-        for (int i = 0; i < env->GetArrayLength(dexElement); i++) {
-            dexobjs.push_back(env->GetObjectArrayElement(dexElement, i));
+        if (g_sdk_int >= 29) {
+            jclass list_jcs = env->FindClass("java/util/ArrayList");
+            jmethodID list_init = env->GetMethodID(list_jcs, "<init>", "()V");
+            jobject list_obj = env->NewObject(list_jcs, list_init);
+            jobjectArray dexElements = static_cast<jobjectArray>(CallStaticMethod("dalvik/system/DexPathList", "makeInMemoryDexElements", "([Ljava/nio/ByteBuffer;Ljava/util/List;)[Ldalvik/system/DexPathList$Element;", dexBufferArr, list_obj).l);
+            for (int i = 0; i < env->GetArrayLength(dexElements); i++) {
+                dexobjs.push_back(env->GetObjectArrayElement(dexElements, i));
+            }
+        } else {
+            jobjectArray dexElement = static_cast<jobjectArray>(GetField(pathListObj, "dexElements", "[Ldalvik/system/DexPathList$Element;").l);
+            for (int i = 0; i < env->GetArrayLength(dexElement); i++) {
+                dexobjs.push_back(env->GetObjectArrayElement(dexElement, i));
+            }
         }
+
         make_dex_elements(env, classLoader, dexobjs);
 
         hook_application(application, InMemoryObj, appname);

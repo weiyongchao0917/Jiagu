@@ -30,8 +30,12 @@ public class ApplicationHook {
             // 先获取到ContextImpl对象
             Context contextImpl = application.getBaseContext();
             // 创建插件中真实的Application且，执行生命周期
-            ClassLoader classLoader = application.getClassLoader();
-            Class<?> applicationClass = classLoader.loadClass(delegateApplicationName);
+            //ClassLoader classLoader = application.getClassLoader();
+            /*final Field parentField = ClassLoader.class.getDeclaredField("parent");
+            parentField.setAccessible(true);
+            parentField.set(ClassLoader.getSystemClassLoader(), cl);*/
+
+            Class<?> applicationClass = cl.loadClass(delegateApplicationName);
             sDelegateApplication = (Application) applicationClass.newInstance();
 
             // 走DelegateApplication的生命周期
